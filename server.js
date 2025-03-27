@@ -8,10 +8,16 @@
  *************************/
 const express = require("express");
 const expressLayouts = require("express-ejs-layouts");
+const path = require('path');
 const env = require("dotenv").config();
 const static = require("./routes/static");
 
 const app = express(); // ✅ Move this to the top BEFORE using `app`
+
+// Serve static files from the 'public' folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Your other routes and settings..
 
 /* ***********************
  * View Engine and Templates
@@ -23,11 +29,15 @@ app.set("layout", "./layouts/layout"); // not at views root
 /* ***********************
  * Routes
  *************************/
-app.use(static);
-
 // Index route
 app.get("/", function(req, res) {
-  res.render("index", { title: "Home" });
+  // Define the messages function
+  const messages = () => {
+    return 'Hello, welcome to CSE Motors!';
+  };
+
+  // Pass 'messages' to the view
+  res.render("index", { title: "Home", messages });
 });
 
 /* ***********************

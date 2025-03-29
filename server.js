@@ -14,6 +14,8 @@ const static = require("./routes/static");
 
 const app = express(); // ✅ Move this to the top BEFORE using `app`
 
+const baseController = require("./controllers/baseController")
+
 // Serve static files from the 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -30,15 +32,13 @@ app.set("layout", "./layouts/layout"); // not at views root
  * Routes
  *************************/
 // Index route
-app.get("/", function(req, res) {
-  // Define the messages function
-  const messages = () => {
-    return 'Hello, welcome to CSE Motors!';
-  };
 
-  // Pass 'messages' to the view
-  res.render("index", { title: "Home", messages });
-});
+  app.get("/",baseController.buildHome )
+
+  app.get("/", (req, res) => {
+    res.render("layouts/layout", { nav: "<ul><li>Home</li><li>About</li></ul>" });
+  });
+  
 
 /* ***********************
  * Local Server Information
